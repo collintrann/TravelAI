@@ -30,11 +30,12 @@ def main(destination: str, urls: list[str]):
         transcription = uploadTikTok.upload_and_transcribe_tiktok(url)
         transcriptions.append(transcription)
 
-    for transcription in transcriptions:
-        with open('backend/transcription.txt', 'a') as f:
-            f.write(transcription + '\n')
+    with open('backend/transcription.txt', 'a') as f:
+        for transcription in transcriptions:
+                f.write(transcription + '\n')
 
     loader = TextLoader('backend/transcription.txt', encoding='utf-8')
+    os.remove('backend/transcriptions.txt')
     documents = loader.load()
     text_splitter = CharacterTextSplitter(chunk_size = 400, chunk_overlap = 20)
     docs = text_splitter.split_documents(documents)
@@ -95,6 +96,7 @@ def initialize():
         return jsonify({"error": "Please provide a destination and at least 5 TikTok URLs."}), 400
 
     response = main(destination, tiktok_urls)
+    print(response['answer'])
     return jsonify({'response': response['answer']}), 200
 
 @app.route('/query', methods=['POST'])
