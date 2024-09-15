@@ -15,31 +15,32 @@ import { Input } from "@/components/ui/input"
 
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
 const formSchema = z.object({
-    location: z.string()
+    link: z.string()
   })
 
-export function LocationForm() {
-    const  navigate = useNavigate(); 
-    const { groupName } = useParams();
-    const updateGroupLocation = useMutation(api.groups.updateGroupLocation);
+interface props {
+    groupName: string;
+}
+
+export function LinkForm(props : props) {
+
+    const updateGroupLink = useMutation(api.groups.updateGroupLink);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            location: "",
+            link: "",
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (groupName === undefined) {
+        if (props.groupName === undefined) {
             throw new Error("Group name not found");
         }
-        await updateGroupLocation({name: groupName, location: values.location});
-        navigate('/dashboard/' + groupName);
+        await updateGroupLink({name: props.groupName, link: values.link});
+        form.reset();
     }
  
     return (
@@ -47,15 +48,15 @@ export function LocationForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
                 control={form.control}
-                name="location"
+                name="link"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>enter location</FormLabel>
-                        <Input placeholder="location" {...field} />
+                    <FormLabel>enter tiktok link</FormLabel>
+                        <Input placeholder="" {...field} />
                     </FormItem>
                 )}
             />
-            <Button type="submit">next</Button>
+            <Button type="submit">add</Button>
           </form>
         </Form>
     )

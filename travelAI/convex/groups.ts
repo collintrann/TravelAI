@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
 
 export const addGroup = mutation({
     args: {
@@ -14,18 +14,48 @@ export const addGroup = mutation({
     },
   });
 
-  export const updateGroup = mutation({
+export const updateGroupLocation = mutation({
     args: {
-      name: v.string(),
-      location: v.string(),
+        name: v.string(),
+        location: v.string(),
     },
-  
+
     handler: async (ctx, args) => {
-      const group = (await ctx.db.query("groups").filter((g) => g.eq(g.field("name"), args.name)).collect()).pop();
-      if (!group) {
+        const group = (await ctx.db.query("groups").filter((g) => g.eq(g.field("name"), args.name)).collect()).pop();
+        if (!group) {
         throw new Error("Group not found");
-      }
-      const id = await ctx.db.patch(group._id, { location: args.location });
-      return id;
+        }
+        await ctx.db.patch(group._id, { location: args.location });
     },
-  });
+});
+
+export const updateGroupLink = mutation({
+    args: {
+        name: v.string(),
+        link: v.string(),
+    },
+    
+    handler: async (ctx, args) => {
+        const group = (await ctx.db.query("groups").filter((g) => g.eq(g.field("name"), args.name)).collect()).pop();
+        if (!group) {
+        throw new Error("Group not found");
+        }
+        let links = group.links;
+        links.push(args.link);
+        await ctx.db.patch(group._id, { links: links});
+    },
+});
+    
+export const getGroup = query({
+    args: {
+        name: v.string(),
+    },
+
+    handler: async (ctx, args) => {
+        const group = (await ctx.db.query("groups").filter((g) => g.eq(g.field("name"), args.name)).collect()).pop();
+        if (!group) {
+        throw new Error("Group not found");
+        }
+        return group;
+    },
+});
