@@ -14,26 +14,33 @@ import {
 import { Input } from "@/components/ui/input"
 
 import { useMutation } from "convex/react";
-import { api } from "../convex/_generated/api";
+import { api } from "../../convex/_generated/api";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const formSchema = z.object({
-    name: z.string().min(2, {
-      message: "Group name must be at least 2 characters.",
-    }),
+    location: z.string()
   })
 
-export function GroupNameForm() {
-    const addGroup = useMutation(api.groups.addGroup);
+export function LocationForm() {
+    const  navigate = useNavigate(); 
+    const { groupName } = useParams();
+
+    const updateGroup = useMutation(api.groups.updateGroup);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
+            location: "",
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-       addGroup({ name: values.name, links: []});
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        if (groupName === undefined) {
+            throw new Error("Group name not found");
+        }
+        await updateGroup({name: groupName, location: values.location});
+        navigate('/dashboard/' + groupName);
     }
  
     return (
@@ -41,16 +48,16 @@ export function GroupNameForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
                 control={form.control}
-                name="name"
+                name="location"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>enter group name</FormLabel>
-                        <Input placeholder="group name" {...field} />
+                    <FormLabel>enter location</FormLabel>
+                        <Input placeholder="location" {...field} />
                     </FormItem>
                 )}
             />
             <Button type="submit">next</Button>
           </form>
         </Form>
-      )
+    )
 }
