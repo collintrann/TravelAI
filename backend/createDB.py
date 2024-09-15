@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from langchain_core.documents import Document
 from langchain_community.document_loaders.text import TextLoader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_iris import IRISVector
 
 load_dotenv(override=True)
@@ -34,13 +34,26 @@ db = IRISVector.from_documents(
     connection_string=CONNECTION_STRING,
 )
 
+
+
 print(f"Number of docs in vector store: {len(db.get()['ids'])}")
 
-query = "Itinerary for trip to Acadia National Park"
-docs_with_score = db.similarity_search_with_score(query)
+llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
+retriever = db.as_retriever()
 
-for doc, score in docs_with_score:
-    print("-" * 80)
-    print("Score: ", score)
-    print(doc.page_content)
-    print("-" * 80)
+retrieved_docs = retriever.invoke("What are some things to do in Acadia National Park?")
+for doc in retrieved_docs:
+    print(doc)
+    print('-'*80)
+
+
+
+
+# query = "Itinerary for trip to Acadia National Park"
+# docs_with_score = db.similarity_search_with_score(query)
+
+# for doc, score in docs_with_score:
+#     print("-" * 80)
+#     print("Score: ", score)
+#     print(doc.page_content)
+#     print("-" * 80)
