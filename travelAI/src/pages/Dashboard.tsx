@@ -10,10 +10,12 @@ import {
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useParams } from "react-router-dom";
-import { LinkForm } from "./LinkForm";
+import { LinkFormModal } from "./LinkFormModal";
 import { TiktokCarousel } from "./TiktokCarousel";
+import { useEffect, useState } from "react";
 
 export function Dashboard() {
+    const [plan, setPlan] = useState("");
     const { groupName } = useParams();
 
     if (groupName === undefined) {
@@ -21,6 +23,20 @@ export function Dashboard() {
     }
 
     const group = useQuery(api.groups.getGroup, {name: groupName});
+
+    useEffect(() => {
+        if (group !== undefined) {
+            fetch('http://localhost:5000/initialize', {
+                'method':'POST',
+                headers : {
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({destination: group.location, urls: group.links})
+            })
+            .then(response => response.json())
+            .then(data => setPlan(data)); 
+        }
+    }, []);
 
     return (
         <>
@@ -32,24 +48,7 @@ export function Dashboard() {
             <div className="row">
                 <div className="plan">
                     <br></br>
-                    <p>{"plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"
-                      + "plan plan plan plan plan plan plan plan \n"}</p>
+                    <p>{plan}</p>
                 </div>
                 <Dialog>
                     <DialogTrigger asChild>
@@ -61,17 +60,11 @@ export function Dashboard() {
                             copy & paste tiktok links here,
                             paste one link at a time
                         </DialogDescription>
-                        <LinkForm groupName={groupName}></LinkForm>
+                        <LinkFormModal groupName={groupName}></LinkFormModal>
                 </DialogContent>
                 </Dialog>
                 <TiktokCarousel></TiktokCarousel>
             </div>
         </>
-        // <>
-        //     <p>{group?._id}</p>
-        //     <p>{group?.name}</p>
-        //     <p>{group?.location}</p>
-        //     <p>{group?.links}</p>
-        // </>
     )
 } 

@@ -15,48 +15,96 @@ import { Input } from "@/components/ui/input"
 
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const formSchema = z.object({
-    link: z.string()
+    link1: z.string(),
+    link2: z.string(),
+    link3: z.string(),
+    link4: z.string(),
+    link5: z.string(),
   })
 
-interface props {
-    groupName: string;
-}
-
-export function LinkForm(props : props) {
-
+export function LinkForm() {
+    const  navigate = useNavigate(); 
+    const { groupName } = useParams();
     const updateGroupLink = useMutation(api.groups.updateGroupLink);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            link: "",
+            link1: "",
+            link2: "",
+            link3: "",
+            link4: "",
+            link5: "",
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (props.groupName === undefined) {
+        if (groupName === undefined) {
             throw new Error("Group name not found");
         }
-        await updateGroupLink({name: props.groupName, link: values.link});
-        form.reset();
+        await updateGroupLink({name: groupName, link: values.link1});
+        await updateGroupLink({name: groupName, link: values.link2});
+        await updateGroupLink({name: groupName, link: values.link3});
+        await updateGroupLink({name: groupName, link: values.link4});
+        await updateGroupLink({name: groupName, link: values.link5});
+        navigate('/dashboard/' + groupName);
     }
  
     return (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormField
                 control={form.control}
-                name="link"
+                name="link1"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>enter tiktok link</FormLabel>
-                        <Input placeholder="" {...field} />
+                    <FormLabel>enter tiktok links</FormLabel>
+                        <Input placeholder="ex: https://www.tiktok.com/t/ZP8eHEmVc/" {...field} />
                     </FormItem>
                 )}
             />
-            <Button type="submit">add</Button>
+            <FormField
+                control={form.control}
+                name="link2"
+                render={({ field }) => (
+                    <FormItem>
+                        <Input placeholder="ex: https://www.tiktok.com/t/ZP8eHEmVc/" {...field} />
+                    </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
+                name="link3"
+                render={({ field }) => (
+                    <FormItem>
+                        <Input placeholder="ex: https://www.tiktok.com/t/ZP8eHEmVc/" {...field} />
+                    </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
+                name="link4"
+                render={({ field }) => (
+                    <FormItem>
+                        <Input placeholder="ex: https://www.tiktok.com/t/ZP8eHEmVc/" {...field} />
+                    </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
+                name="link5"
+                render={({ field }) => (
+                    <FormItem>
+                        <Input placeholder="ex: https://www.tiktok.com/t/ZP8eHEmVc/" {...field} />
+                    </FormItem>
+                )}
+            />
+            <br/>
+            <Button type="submit">next</Button>
           </form>
         </Form>
     )

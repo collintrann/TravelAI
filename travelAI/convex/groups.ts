@@ -23,7 +23,7 @@ export const updateGroupLocation = mutation({
     handler: async (ctx, args) => {
         const group = (await ctx.db.query("groups").filter((g) => g.eq(g.field("name"), args.name)).collect()).pop();
         if (!group) {
-        throw new Error("Group not found");
+            throw new Error("Group not found");
         }
         await ctx.db.patch(group._id, { location: args.location });
     },
@@ -38,7 +38,7 @@ export const updateGroupLink = mutation({
     handler: async (ctx, args) => {
         const group = (await ctx.db.query("groups").filter((g) => g.eq(g.field("name"), args.name)).collect()).pop();
         if (!group) {
-        throw new Error("Group not found");
+            throw new Error("Group not found");
         }
         let links = group.links;
         links.push(args.link);
@@ -54,8 +54,9 @@ export const getGroup = query({
     handler: async (ctx, args) => {
         const group = (await ctx.db.query("groups").filter((g) => g.eq(g.field("name"), args.name)).collect()).pop();
         if (!group) {
-        throw new Error("Group not found");
+            throw new Error("Group not found");
         }
+
         return group;
     },
 });

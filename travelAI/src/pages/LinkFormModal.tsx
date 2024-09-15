@@ -15,29 +15,32 @@ import { Input } from "@/components/ui/input"
 
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
-    name: z.string().min(2, {
-      message: "Group name must be at least 2 characters.",
-    }),
+    link: z.string()
   })
 
-export function GroupNameForm() {
-    const  navigate = useNavigate(); 
+interface props {
+    groupName: string;
+}
 
-    const addGroup = useMutation(api.groups.addGroup);
+export function LinkFormModal(props : props) {
+
+    const updateGroupLink = useMutation(api.groups.updateGroupLink);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
+            link: "",
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-      await addGroup({name: values.name, location: "", links: []});
-      navigate('/location/' + values.name);
+        if (props.groupName === undefined) {
+            throw new Error("Group name not found");
+        }
+        await updateGroupLink({name: props.groupName, link: values.link});
+        form.reset();
     }
  
     return (
@@ -45,16 +48,16 @@ export function GroupNameForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
                 control={form.control}
-                name="name"
+                name="link"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>enter trip name</FormLabel>
-                        <Input placeholder="ex: spring break" {...field} />
+                    <FormLabel>enter tiktok link</FormLabel>
+                        <Input placeholder="ex: https://www.tiktok.com/t/ZP8eHEmVc/" {...field} />
                     </FormItem>
                 )}
             />
-            <Button type="submit">next</Button>
+            <Button type="submit">add</Button>
           </form>
         </Form>
-      )
+    )
 }

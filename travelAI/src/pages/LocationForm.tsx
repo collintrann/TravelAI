@@ -39,7 +39,7 @@ export function LocationForm() {
             throw new Error("Group name not found");
         }
         await updateGroupLocation({name: groupName, location: values.location});
-        navigate('/dashboard/' + groupName);
+        navigate('/links/' + groupName);
     }
  
     return (
@@ -50,8 +50,8 @@ export function LocationForm() {
                 name="location"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>enter location</FormLabel>
-                        <Input placeholder="location" {...field} />
+                    <FormLabel>enter destination</FormLabel>
+                        <Input placeholder="ex: hawaii" {...field} />
                     </FormItem>
                 )}
             />

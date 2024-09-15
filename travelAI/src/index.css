@@ -161,6 +161,6 @@ button:focus-visible {
 }
 
 .plan {
-  max-width: 600px;
+  width: 600px;
   padding-right: 100px;
 }
