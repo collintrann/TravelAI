@@ -9,7 +9,7 @@ from langchain_iris import IRISVector
 load_dotenv(override=True)
 
 if not os.environ.get("OPENAI_API_KEY"): 
-    os.environ["OPENAI_API_KEY"] = open("backend/API_KEYS").read().strip()
+    os.environ["OPENAI_API_KEY"] = open("backend/API_KEYS/OPENAI_API_KEY.txt").read().strip()
 
 loader = TextLoader('backend/transcription.txt', encoding='utf-8')
 documents = loader.load()
