@@ -29,7 +29,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  flex-direction: column;
+  padding-left: 43%;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -135,4 +135,9 @@ button:focus-visible {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.tiktok_container {
+  height: 580px;
+  width: fit-content;
 }

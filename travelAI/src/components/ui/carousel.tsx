@@ -250,22 +250,6 @@ const CarouselNext = React.forwardRef<
 })
 CarouselNext.displayName = "CarouselNext"
 
-const iframe_container = {
-  left: 0,
-  width: "100%",
-  height: 500,
-  position: "relative"
-}
-
-const iframe = {
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  position: "absolute",
-  border: 0
-}
-
 export {
   type CarouselApi,
   Carousel,
@@ -273,6 +257,4 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-  iframe_container,
-  iframe
 }

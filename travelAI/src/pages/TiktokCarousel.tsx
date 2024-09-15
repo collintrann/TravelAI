@@ -26,14 +26,16 @@ export function TiktokCarousel() {
         <CarouselContent>
         {group !== undefined && group.links.map((link) => (
             <CarouselItem key={link}>
-            <div className="p-1">
-                <TikTok url={link}></TikTok>
+            <div className="tiktok_container">
+                <div className="tiktok">
+                    <TikTok url={link}></TikTok>
+                </div>
             </div>
             </CarouselItem>
         ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        {group !== undefined && group.links.length != 0  && <CarouselPrevious />}
+        {group !== undefined && group.links.length != 0  && <CarouselNext />}
     </Carousel>
   )
 }
