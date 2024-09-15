@@ -2,9 +2,12 @@ from backend import uploadTikTok
 from langchain.prompts.chat import ChatPromptTemplate
 
 tiktok_urls = []
-
+transcriptions = []
 for url in tiktok_urls:
     transcription = uploadTikTok.upload_and_transcribe_tiktok(url)
+    transcriptions.append(transcription)
+
+
 
 
 template = template = ChatPromptTemplate.from_messages(
