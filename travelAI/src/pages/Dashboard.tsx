@@ -24,21 +24,48 @@ export function Dashboard() {
 
     return (
         <>
-            <Dialog>
-                <DialogTrigger asChild>
-                    <Button variant="outline">add inspo</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                    <DialogTitle>add inspo</DialogTitle>
-                    <DialogDescription>
-                        copy & paste tiktok links here,
-                        paste one link at a time
-                    </DialogDescription>
-                    <LinkForm groupName={groupName}></LinkForm>
-            </DialogContent>
-            </Dialog>
-            <br/>
-            <TiktokCarousel></TiktokCarousel>
+            <div>
+                <h1>{groupName}</h1>
+                <br/>
+                <h2>{group && "travel plan for "}<b>{group?.location}</b></h2>
+            </div>
+            <div className="row">
+                <div className="plan">
+                    <br></br>
+                    <p>{"plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"
+                      + "plan plan plan plan plan plan plan plan \n"}</p>
+                </div>
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button variant="outline">add inspo</Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md">
+                        <DialogTitle>add inspo</DialogTitle>
+                        <DialogDescription>
+                            copy & paste tiktok links here,
+                            paste one link at a time
+                        </DialogDescription>
+                        <LinkForm groupName={groupName}></LinkForm>
+                </DialogContent>
+                </Dialog>
+                <TiktokCarousel></TiktokCarousel>
+            </div>
         </>
         // <>
         //     <p>{group?._id}</p>
