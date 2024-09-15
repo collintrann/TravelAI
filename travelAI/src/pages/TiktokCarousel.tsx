@@ -22,7 +22,7 @@ export function TiktokCarousel() {
     const group = useQuery(api.groups.getGroup, {name: groupName});
 
     return (
-    <Carousel className="w-full max-w-xs">
+    <Carousel className="w-full max-w-xs carousel">
         <CarouselContent>
         {group !== undefined && group.links.map((link) => (
             <CarouselItem key={link}>
