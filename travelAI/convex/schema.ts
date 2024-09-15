@@ -4,6 +4,7 @@ import { v } from "convex/values";
 export default defineSchema({
   groups: defineTable({
     name: v.string(),
+    location: v.string(),
     links: v.array(v.string()),
   }),
 });
